@@ -1,13 +1,14 @@
 # import dependancies
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import pandas as pd 
 import pymongo 
 import requests 
 
 def init_browser():
-    executable_path = {"executable_path": "C:\Drivers\chromedriver"}
+    executable_path = {"executable_path": "chromedriver"}
     return Browser("chrome", **executable_path, headless=False)
 
 def scrape():
@@ -37,9 +38,7 @@ def scrape():
     soup = bs(html2, 'html.parser')
 
     #find the image source
-    img_source = soup.find(class_ = "BaseImage")['src']
-    #rename as feature_image_url
-    feature_image_url = img_source
+    feature_image_url = soup.find(class_ = "BaseImage")['src']
 
     #visit the Mars facts url
 
@@ -88,7 +87,7 @@ def scrape():
     Mars={
         "Mars_news_title": top_news_title,
         "Mars_news_p": top_news_p,
-        "Featured_mars_image": featured_image_url,
+        "Featured_mars_image": feature_image_url,
         "Mars_facts": mars_table,
         "Mars_hemispheres": hemisphere_image_urls
     }
